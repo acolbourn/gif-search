@@ -14,13 +14,15 @@ declare module '@material-ui/core/styles/createTheme' {
   }
 }
 
-const theme = createTheme({
-  palette: {
-    type: 'dark',
-  },
-  colors: {
-    background: 'black',
-  },
-});
+const generateTheme = (useDarkTheme: boolean) => {
+  return createTheme({
+    palette: {
+      type: useDarkTheme ? 'dark' : 'light',
+    },
+    colors: {
+      background: 'black',
+    },
+  });
+};
 
-export default theme;
+export default generateTheme;

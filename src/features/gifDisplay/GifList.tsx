@@ -1,9 +1,13 @@
 import React from 'react';
-import { useGetGifsByNameQuery } from './gifSearchService';
+import { useGetGifsByNameQuery } from '../search/gifSearchService';
+import { useAppSelector } from '../../app/hooks';
+import { selectSearchParams } from '../search/searchSlice';
 
 const GifList: React.FC = () => {
+  const { query } = useAppSelector(selectSearchParams);
+
   const { data, error, isLoading } = useGetGifsByNameQuery({
-    q: 'cat',
+    q: query,
     gifsPerPage: 20,
     pageNumber: 1,
   });

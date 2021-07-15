@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './styles/theme';
-import SearchBar from './features/gifSearch/SearchBar';
-import GifList from './features/gifSearch/GifList';
+import { useAppSelector } from './app/hooks';
+import generateTheme from './features/theme/theme';
+import { selectTheme } from './features/theme/themeSlice';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Home from './Home';
 
 function App() {
+  const isDarkMode = useAppSelector(selectTheme);
+  const theme = useMemo(() => generateTheme(isDarkMode), [isDarkMode]);
+
   return (
     <ThemeProvider theme={theme}>
-      <div className='App'>
-        <header className='App-header'>
-          <SearchBar />
-          <GifList />
-        </header>
-      </div>
+      <CssBaseline />
+      <Home />
     </ThemeProvider>
   );
 }
