@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { GifApiResponse } from '../../types/GifApiResponse';
 
 interface GifSearchParams {
   q: string;
@@ -13,7 +14,7 @@ export const gifSearchApi = createApi({
     baseUrl: `https://api.giphy.com/v1/gifs/`,
   }),
   endpoints: (builder) => ({
-    getGifsByName: builder.query<any, GifSearchParams>({
+    getGifsByName: builder.query<GifApiResponse, GifSearchParams>({
       query: (arg) => {
         const { q, gifsPerPage, pageNumber } = arg;
         return {

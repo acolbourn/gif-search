@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) =>
     homeRoot: {
       display: 'grid',
       gridTemplateColumns: '1fr',
-      gridTemplateRows: '1fr 3fr 1fr',
+      gridAutoRows: 'min-content',
       gridTemplateAreas: `
         'headerArea'
         'searchArea'
