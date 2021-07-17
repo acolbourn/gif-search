@@ -1,9 +1,12 @@
+import React, { Suspense } from 'react';
+import { useImage } from 'react-image';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     gifRoot: {
-      marginTop: '8px',
+      marginBottom: '8px',
       verticalAlign: 'middle',
       width: '100%',
       borderRadius: '4px',
@@ -12,13 +15,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface GifProps {
-  src: string;
+  imageSrc: string;
   alt: string;
 }
 
-const Gif: React.FC<GifProps> = ({ src, alt }) => {
+const GifLoader: React.FC<GifProps> = ({ imageSrc, alt }) => {
   const classes = useStyles();
+
+  const { src } = useImage({
+    srcList: imageSrc,
+  });
+
   return <img src={src} alt={alt} className={classes.gifRoot} />;
+};
+
+const Gif: React.FC<GifProps> = ({ imageSrc, alt }) => {
+  return (
+    <Suspense fallback={<Skeleton variant='rect' width={210} height={118} />}>
+      <GifLoader imageSrc={imageSrc} alt={alt} />
+    </Suspense>
+  );
 };
 
 export default Gif;

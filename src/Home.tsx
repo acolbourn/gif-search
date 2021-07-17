@@ -1,8 +1,7 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import SearchBar from './features/search/SearchBar';
+import Navbar from './features/navbar/Navbar';
 import GifList from './features/gifDisplay/GifList';
-import ThemeButton from './features/theme/ThemeButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,23 +10,13 @@ const useStyles = makeStyles((theme: Theme) =>
       gridTemplateColumns: '1fr',
       gridAutoRows: 'min-content',
       gridTemplateAreas: `
-        'headerArea'
-        'searchArea'
+        'navbarArea'
         'gifArea'
         'paginationArea'
       `,
     },
-    headerArea: {
-      gridArea: 'headerArea',
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    searchArea: {
-      gridArea: 'searchArea',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+    navbarArea: {
+      gridArea: 'navbarArea',
     },
     gifArea: {
       gridArea: 'gifArea',
@@ -46,11 +35,8 @@ const Home: React.FC = () => {
 
   return (
     <div className={classes.homeRoot}>
-      <header className={classes.headerArea}>
-        <ThemeButton />
-      </header>
-      <div className={classes.searchArea}>
-        <SearchBar />
+      <div className={classes.navbarArea}>
+        <Navbar />
       </div>
       <div className={classes.gifArea}>
         <GifList />

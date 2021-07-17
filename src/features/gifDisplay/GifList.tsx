@@ -2,35 +2,9 @@ import React from 'react';
 import { useGetGifsByNameQuery } from '../search/gifSearchService';
 import { useAppSelector } from '../../app/hooks';
 import { selectSearchParams } from '../search/searchSlice';
+import Masonry from 'react-masonry-css';
 import Gif from './Gif';
-
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    gifListRoot: {
-      width: '100%',
-    },
-    row: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      padding: '0 4px',
-    },
-    column: {
-      padding: '0 4px',
-      flex: '25%',
-      maxWidth: '25%',
-      [theme.breakpoints.down('sm')]: {
-        flex: '50%',
-        maxWidth: '50%',
-      },
-      [theme.breakpoints.down('xs')]: {
-        flex: '100%',
-        maxWidth: '100%',
-      },
-    },
-  })
-);
+import useStyles from './styles/GifListStyles';
 
 const GifList: React.FC = () => {
   const classes = useStyles();
@@ -42,36 +16,33 @@ const GifList: React.FC = () => {
     pageNumber: 1,
   });
 
-  let content: JSX.Element[] | null;
+  let gifs: JSX.Element[] | null;
   if (data) {
-    const numOfGifs = data.data.length;
-    let columns: JSX.Element[][] = [[], [], [], []];
-    let currentColumn = 0;
-
-    for (let i = 0; i < numOfGifs; i++) {
-      const gif = data.data[i];
-      columns[currentColumn].push(
-        <Gif src={gif.images.fixed_width.url} alt={gif.title} key={gif.id} />
-      );
-
-      if (currentColumn >= 3) currentColumn = 0;
-      else currentColumn++;
-    }
-
-    content = columns.map((column, idx) => (
-      <div className={classes.column} key={idx}>
-        {column}
-      </div>
+    gifs = data.data.map((gif) => (
+      <Gif imageSrc={gif.images.fixed_width.url} alt={gif.title} key={gif.id} />
     ));
   } else {
-    content = null;
+    gifs = null;
   }
+
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1,
+  };
 
   return (
     <div className={classes.gifListRoot}>
       {error ? <div>Error</div> : null}
       {isLoading ? <div>Loading...</div> : null}
-      <div className={classes.row}>{content}</div>
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className={classes.masonryGrid}
+        columnClassName={classes.masonryColumn}
+      >
+        {gifs}
+      </Masonry>
     </div>
   );
 };
