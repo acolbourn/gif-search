@@ -3,23 +3,27 @@ import { useGetGifsByNameQuery } from '../search/gifSearchService';
 import { useAppSelector } from '../../app/hooks';
 import { selectSearchParams } from '../search/searchSlice';
 import Masonry from 'react-masonry-css';
-import Gif from './Gif';
+import GifLoader from './GifLoader';
 import useStyles from './styles/GifListStyles';
 
 const GifList: React.FC = () => {
   const classes = useStyles();
-  const { query } = useAppSelector(selectSearchParams);
+  const { query, page } = useAppSelector(selectSearchParams);
 
   const { data, error, isLoading } = useGetGifsByNameQuery({
     q: query,
     gifsPerPage: 20,
-    pageNumber: 1,
+    page,
   });
 
   let gifs: JSX.Element[] | null;
   if (data) {
     gifs = data.data.map((gif) => (
-      <Gif imageSrc={gif.images.fixed_width.url} alt={gif.title} key={gif.id} />
+      <GifLoader
+        imageSrc={gif.images.fixed_width.url}
+        alt={gif.title}
+        key={gif.id}
+      />
     ));
   } else {
     gifs = null;

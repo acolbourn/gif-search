@@ -2,6 +2,7 @@ import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Navbar from './features/navbar/Navbar';
 import GifList from './features/gifDisplay/GifList';
+import PageButtons from './features/pagination/PageButtons';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,7 +42,9 @@ const Home: React.FC = () => {
       <div className={classes.gifArea}>
         <GifList />
       </div>
-      <div className={classes.paginationArea}>Pagination</div>
+      <div className={classes.paginationArea}>
+        <PageButtons />
+      </div>
     </div>
   );
 };

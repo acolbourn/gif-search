@@ -2,14 +2,16 @@ import { createTheme } from '@material-ui/core/styles';
 
 declare module '@material-ui/core/styles/createTheme' {
   interface Theme {
-    colors: {
-      background: string;
+    grid: {
+      spacing: number;
+      borderRadius: number;
     };
   }
   // allow configuration using `createTheme`
   interface ThemeOptions {
-    colors?: {
-      background?: string;
+    grid?: {
+      spacing?: number;
+      borderRadius?: number;
     };
   }
 }
@@ -19,8 +21,9 @@ const generateTheme = (useDarkTheme: boolean) => {
     palette: {
       type: useDarkTheme ? 'dark' : 'light',
     },
-    colors: {
-      background: 'black',
+    grid: {
+      spacing: 8,
+      borderRadius: 4,
     },
   });
 };

@@ -4,15 +4,15 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     gifListRoot: {
       width: '100%',
-      padding: '8px',
+      padding: `${theme.grid.spacing}px`,
     },
     masonryGrid: {
       display: 'flex',
-      marginLeft: '-8px' /* gutter size offset */,
+      marginLeft: `-${theme.grid.spacing}px` /* gutter size offset */,
       width: 'auto',
     },
     masonryColumn: {
-      paddingLeft: '8px' /* gutter size */,
+      paddingLeft: `${theme.grid.spacing}px` /* gutter size */,
       backgroundClip: 'padding-box',
     },
   })
