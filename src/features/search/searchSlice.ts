@@ -1,32 +1,90 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  PayloadAction,
+  createAsyncThunk,
+  createEntityAdapter,
+} from '@reduxjs/toolkit';
+import axios from 'axios';
 import { RootState } from '../../app/store';
+import { Gif, Pagination, GifApiResponse } from '../../types/GifApiResponse';
 
 export interface SearchState {
   query: string;
-  page: number;
+  status: 'idle' | 'loading' | 'succeeded' | 'error';
+  error: string | undefined;
+  pagination: Pagination | undefined;
+  currentAPIOffset: number;
 }
 
-const initialState: SearchState = {
+const gifsAdapter = createEntityAdapter<Gif>({
+  selectId: (gif) => gif.id,
+});
+
+const initialState = gifsAdapter.getInitialState<SearchState>({
   query: '',
-  page: 1,
-};
+  status: 'idle',
+  error: undefined,
+  pagination: undefined,
+  currentAPIOffset: 0,
+});
+
+export interface GifSearchParams {
+  query: string;
+  limit?: number;
+  offset?: number;
+}
+
+export const fetchGifs = createAsyncThunk(
+  'search/fetchGifs',
+  async (searchParams: GifSearchParams) => {
+    const baseURL = `https://api.giphy.com/v1/gifs/search`;
+    const params = {
+      api_key: process.env.REACT_APP_GIPHY_API_KEY,
+      q: searchParams.query,
+      limit: searchParams.limit,
+      offset: searchParams.offset,
+    };
+
+    const response = await axios.get<GifApiResponse>(baseURL, {
+      params: params,
+    });
+    return response.data.data;
+  }
+);
 
 export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    submitQuery: (state, action: PayloadAction<string>) => {
-      state.page = 1;
+    saveQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
     },
-    changePage: (state, action: PayloadAction<number>) => {
-      state.page = action.payload;
+    saveAPIOffset: (state, action: PayloadAction<number>) => {
+      state.currentAPIOffset = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchGifs.fulfilled, (state, action) => {
+      gifsAdapter.setAll(state, action.payload);
+      state.status = 'succeeded';
+      state.error = undefined;
+    });
+    builder.addCase(fetchGifs.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(fetchGifs.rejected, (state, action) => {
+      state.status = 'error';
+      state.error = action.error.message;
+    });
   },
 });
 
-export const { submitQuery, changePage } = searchSlice.actions;
+export const { saveQuery, saveAPIOffset } = searchSlice.actions;
 
-export const selectSearchParams = (state: RootState) => state.search;
+export const { selectAll: selectAllGifs } = gifsAdapter.getSelectors<RootState>(
+  (state) => state.search
+);
+
+export const selectSearchState = (state: RootState) => state.search;
 
 export default searchSlice.reducer;

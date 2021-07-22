@@ -4,7 +4,7 @@ import { useAppSelector } from './app/hooks';
 import generateTheme from './features/theme/theme';
 import { selectTheme } from './features/theme/themeSlice';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Home from './Home';
+import Home from './routes/Home';
 
 function App() {
   const isDarkMode = useAppSelector(selectTheme);

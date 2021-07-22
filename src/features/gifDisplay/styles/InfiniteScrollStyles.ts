@@ -2,17 +2,13 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      verticalAlign: 'middle',
+    container: {
+      minHeight: '100vh',
       width: '100%',
     },
-    gif: {
-      verticalAlign: 'middle',
+    masonic: {
+      padding: 8,
       width: '100%',
-      borderRadius: `${theme.grid.borderRadius}px`,
-      maxHeight: '400px',
-      objectFit: 'cover',
-      display: 'block',
     },
   })
 );

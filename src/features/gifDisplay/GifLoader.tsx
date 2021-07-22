@@ -1,12 +1,16 @@
 import React, { Suspense } from 'react';
-import { GifProps } from './Gif';
-import Gif from './Gif';
+import { Gif } from '../../types/GifApiResponse';
+import GifDisplay from './GifDisplay';
 import ImagePlaceholder from './ImagePlaceholder';
 
-const GifLoader: React.FC<GifProps> = ({ imageSrc, alt }) => {
+export interface GifLoaderProps {
+  data: Gif;
+}
+
+const GifLoader: React.FC<GifLoaderProps> = ({ data }) => {
   return (
     <Suspense fallback={<ImagePlaceholder defaultHeight={200} />}>
-      <Gif imageSrc={imageSrc} alt={alt} />
+      <GifDisplay gif={data} />
     </Suspense>
   );
 };

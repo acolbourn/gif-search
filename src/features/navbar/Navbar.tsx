@@ -7,11 +7,11 @@ import SearchBar from '../search/SearchBar';
 import ThemeButton from '../theme/ThemeButton';
 import useStyles from './styles/NavbarStyles';
 
-interface Props {
+interface HideOnScrollProps {
   children: React.ReactElement;
 }
 
-function HideOnScroll(props: Props) {
+function HideOnScroll(props: HideOnScrollProps) {
   const trigger = useScrollTrigger();
   return (
     <Slide appear={false} direction='down' in={!trigger}>

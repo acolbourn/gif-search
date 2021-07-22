@@ -4,7 +4,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { useAppDispatch } from '../../app/hooks';
-import { submitQuery } from './searchSlice';
+import { saveQuery, fetchGifs, GifSearchParams } from './searchSlice';
 import useStyles from './styles/SearchBarStyles';
 
 const SearchBar: React.FC = () => {
@@ -14,7 +14,13 @@ const SearchBar: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(submitQuery(query));
+    const searchParams: GifSearchParams = {
+      query,
+      limit: 30,
+      offset: 0,
+    };
+    dispatch(fetchGifs(searchParams));
+    dispatch(saveQuery(query));
     setQuery('');
   };
 
