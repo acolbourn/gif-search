@@ -13,7 +13,6 @@ export interface SearchState {
   status: 'idle' | 'loading' | 'succeeded' | 'error';
   error: string | undefined;
   pagination: Pagination | undefined;
-  currentAPIOffset: number;
 }
 
 const gifsAdapter = createEntityAdapter<Gif>({
@@ -25,7 +24,6 @@ const initialState = gifsAdapter.getInitialState<SearchState>({
   status: 'idle',
   error: undefined,
   pagination: undefined,
-  currentAPIOffset: 0,
 });
 
 export interface GifSearchParams {
@@ -59,9 +57,6 @@ export const searchSlice = createSlice({
     saveQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
     },
-    saveAPIOffset: (state, action: PayloadAction<number>) => {
-      state.currentAPIOffset = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGifs.fulfilled, (state, action) => {
@@ -79,7 +74,7 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { saveQuery, saveAPIOffset } = searchSlice.actions;
+export const { saveQuery } = searchSlice.actions;
 
 export const { selectAll: selectAllGifs } = gifsAdapter.getSelectors<RootState>(
   (state) => state.search

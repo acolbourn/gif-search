@@ -7,6 +7,8 @@ import { useAppDispatch } from '../../app/hooks';
 import { saveQuery, fetchGifs, GifSearchParams } from './searchSlice';
 import useStyles from './styles/SearchBarStyles';
 
+export const NUM_GIFS_PER_SEARCH = 20;
+
 const SearchBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -16,7 +18,7 @@ const SearchBar: React.FC = () => {
     event.preventDefault();
     const searchParams: GifSearchParams = {
       query,
-      limit: 30,
+      limit: NUM_GIFS_PER_SEARCH,
       offset: 0,
     };
     dispatch(fetchGifs(searchParams));
