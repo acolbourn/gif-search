@@ -14,7 +14,6 @@ const useStyles = makeStyles<Theme, StyleProps>((theme) =>
         theme.palette.type === 'light' ? 0.11 : 0.13
       ),
       height: ({ defaultHeight }) => `${defaultHeight}px`,
-      marginBottom: `${theme.grid.spacing}px`,
       borderRadius: `${theme.grid.borderRadius}px`,
       animation: '$pulse 1.5s ease-in-out 0.5s infinite',
     },

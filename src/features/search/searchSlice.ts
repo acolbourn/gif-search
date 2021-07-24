@@ -6,13 +6,13 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '../../app/store';
-import { Gif, Pagination, GifApiResponse } from '../../types/GifApiResponse';
+import { Gif, GifApiResponse } from '../../types/GifApiResponse';
 
 export interface SearchState {
   query: string;
   status: 'idle' | 'loading' | 'succeeded' | 'error';
   error: string | undefined;
-  pagination: Pagination | undefined;
+  totalNumGifs: number | undefined;
 }
 
 const gifsAdapter = createEntityAdapter<Gif>({
@@ -23,7 +23,7 @@ const initialState = gifsAdapter.getInitialState<SearchState>({
   query: '',
   status: 'idle',
   error: undefined,
-  pagination: undefined,
+  totalNumGifs: undefined,
 });
 
 export interface GifSearchParams {
@@ -46,7 +46,7 @@ export const fetchGifs = createAsyncThunk(
     const response = await axios.get<GifApiResponse>(baseURL, {
       params: params,
     });
-    return response.data.data;
+    return response.data;
   }
 );
 
@@ -54,13 +54,16 @@ export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    saveQuery: (state, action: PayloadAction<string>) => {
+    configNewQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
+      gifsAdapter.removeAll(state);
+      state.totalNumGifs = 0;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchGifs.fulfilled, (state, action) => {
-      gifsAdapter.setAll(state, action.payload);
+      gifsAdapter.upsertMany(state, action.payload.data);
+      state.totalNumGifs = action.payload.pagination.total_count;
       state.status = 'succeeded';
       state.error = undefined;
     });
@@ -74,7 +77,7 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { saveQuery } = searchSlice.actions;
+export const { configNewQuery } = searchSlice.actions;
 
 export const { selectAll: selectAllGifs } = gifsAdapter.getSelectors<RootState>(
   (state) => state.search

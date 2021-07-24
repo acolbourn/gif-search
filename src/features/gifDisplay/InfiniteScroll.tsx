@@ -3,23 +3,22 @@ import { Masonry, useInfiniteLoader } from 'masonic';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { fetchGifs, GifSearchParams } from '../search/searchSlice';
 import { selectAllGifs, selectSearchState } from '../search/searchSlice';
-import { Gif } from '../../types/GifApiResponse';
 import { NUM_GIFS_PER_SEARCH } from '../search/SearchBar';
 import GifLoader from './GifLoader';
+import GifStatus from './GifStatus';
 import useStyles from './styles/InfiniteScrollStyles';
 
 const InfiniteScroll = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const latestGifs = useAppSelector(selectAllGifs);
-  const { query } = useAppSelector(selectSearchState);
-  const [gifs, setGifs] = useState<Gif[]>([]);
+  const gifs = useAppSelector(selectAllGifs);
+  const { query, totalNumGifs } = useAppSelector(selectSearchState);
   const [apiIndex, setApiIndex] = useState(0);
 
-  // Add latest gifs from redux to total list
+  // Reset api index when new query is entered
   useEffect(() => {
-    setGifs((prev) => [...prev, ...latestGifs]);
-  }, [latestGifs]);
+    setApiIndex(0);
+  }, [query]);
 
   // Callback when user nears end of gifs - increments API index
   const updateApiIndex = (startIndex: number) => {
@@ -30,16 +29,18 @@ const InfiniteScroll = () => {
 
   // When start index changes, dispatch api request to redux thunk
   useEffect(() => {
-    // skip search if offset = 0, initial search handles that case
-    if (apiIndex !== 0) {
-      const searchParams: GifSearchParams = {
-        query,
-        limit: NUM_GIFS_PER_SEARCH,
-        offset: apiIndex,
-      };
-      dispatch(fetchGifs(searchParams));
+    if (moreGifsAvailable(totalNumGifs, apiIndex)) {
+      // skip search if offset = 0, handled by initial search
+      if (apiIndex !== 0) {
+        const searchParams: GifSearchParams = {
+          query,
+          limit: NUM_GIFS_PER_SEARCH,
+          offset: apiIndex,
+        };
+        dispatch(fetchGifs(searchParams));
+      }
     }
-  }, [query, dispatch, apiIndex]);
+  }, [query, dispatch, totalNumGifs, apiIndex]);
 
   // Trigger callback when user nears end of loaded items
   const maybeLoadMore = useInfiniteLoader(updateApiIndex, {
@@ -48,11 +49,26 @@ const InfiniteScroll = () => {
     threshold: 5,
   });
 
+  interface MoreGifsAvailable {
+    (totalNumGifs: number | undefined, apiIndex: number): boolean;
+  }
+
+  const moreGifsAvailable: MoreGifsAvailable = (totalNumGifs, apiIndex) => {
+    const maxApiLimit = 4999;
+    if (totalNumGifs) {
+      if (apiIndex < Math.min(totalNumGifs, maxApiLimit)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <main className={classes.container}>
       <div className={classes.masonic}>
         <Masonry
           onRender={maybeLoadMore}
+          key={query}
           items={gifs}
           columnGutter={8}
           columnWidth={250}
@@ -60,6 +76,7 @@ const InfiniteScroll = () => {
           render={GifLoader}
         />
       </div>
+      <GifStatus />
     </main>
   );
 };
