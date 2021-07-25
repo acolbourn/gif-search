@@ -5,6 +5,7 @@ import Slide from '@material-ui/core/Slide';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import SearchBar from '../search/SearchBar';
 import ThemeButton from '../theme/ThemeButton';
+import BackToTop from './BackToTop';
 import useStyles from './styles/NavbarStyles';
 
 interface HideOnScrollProps {
@@ -38,6 +39,7 @@ export default function Navbar() {
         </AppBar>
       </HideOnScroll>
       <div className={classes.offset} />
+      <BackToTop />
     </>
   );
 }

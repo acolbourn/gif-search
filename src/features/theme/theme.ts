@@ -1,4 +1,5 @@
-import { createTheme } from '@material-ui/core/styles';
+// 'unstable_createMuiStrictModeTheme' is imported instead of 'createTheme' to fix 'findDOMNode is deprecated in StrictMode' error.  This will be fixed in Material-UI v.5 which is still beta
+import { unstable_createMuiStrictModeTheme as createTheme } from '@material-ui/core';
 
 declare module '@material-ui/core/styles/createTheme' {
   interface Theme {
