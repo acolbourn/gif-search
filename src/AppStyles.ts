@@ -2,20 +2,21 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    homeRoot: {
+    appRoot: {
+      width: '100%',
       display: 'grid',
       gridTemplateColumns: '1fr',
       gridAutoRows: 'min-content',
       gridTemplateAreas: `
-        'navbarArea'        
-        'gifArea'        
+        'navbarArea'
+        'pageArea'
       `,
     },
     navbarArea: {
       gridArea: 'navbarArea',
     },
-    gifArea: {
-      gridArea: 'gifArea',
+    pageArea: {
+      gridArea: 'pageArea',
     },
   })
 );

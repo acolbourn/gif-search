@@ -3,6 +3,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Slide from '@material-ui/core/Slide';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import IconButton from '@material-ui/core/IconButton';
+import HomeIcon from '@material-ui/icons/Home';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import { Link, useLocation } from 'react-router-dom';
 import SearchBar from '../search/SearchBar';
 import ThemeButton from '../theme/ThemeButton';
 import BackToTop from './BackToTop';
@@ -23,12 +27,28 @@ function HideOnScroll(props: HideOnScrollProps) {
 
 export default function Navbar() {
   const classes = useStyles();
+  let { pathname } = useLocation();
 
   return (
     <>
       <HideOnScroll>
-        <AppBar className={classes.navbar}>
-          <Toolbar>
+        <AppBar>
+          <Toolbar className={classes.navbar}>
+            <div className={classes.navLinks}>
+              {pathname === '/' ? (
+                <Link to='/favorites'>
+                  <IconButton aria-label='favorites'>
+                    <FavoriteIcon />
+                  </IconButton>
+                </Link>
+              ) : (
+                <Link to='/'>
+                  <IconButton aria-label='home'>
+                    <HomeIcon />
+                  </IconButton>
+                </Link>
+              )}
+            </div>
             <div className={classes.searchBar}>
               <SearchBar />
             </div>

@@ -4,6 +4,15 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     navbar: {
       padding: '2px 0',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    navLinks: {
+      marginLeft: '8px',
+      [theme.breakpoints.down('xs')]: {
+        marginLeft: 0,
+      },
     },
     searchBar: {
       width: '100%',
@@ -12,17 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     themeButton: {
-      position: 'absolute',
-      right: '8px',
+      marginRight: '8px',
       [theme.breakpoints.down('xs')]: {
-        position: 'relative',
-        right: 0,
+        marginRight: 0,
       },
     },
     offset: {
-      height: '68px',
+      height: '64px',
       [theme.breakpoints.down('xs')]: {
-        height: '60px',
+        height: '56px',
       },
     },
   })

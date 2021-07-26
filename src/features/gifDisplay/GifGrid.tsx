@@ -6,9 +6,9 @@ import { selectAllGifs, selectSearchState } from '../search/searchSlice';
 import { NUM_GIFS_PER_SEARCH } from '../search/SearchBar';
 import GifLoader from './GifLoader';
 import GifStatus from './GifStatus';
-import useStyles from './styles/InfiniteScrollStyles';
+import useStyles from './styles/GifGridStyles';
 
-const InfiniteScroll = () => {
+const GifGrid = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const gifs = useAppSelector(selectAllGifs);
@@ -64,7 +64,7 @@ const InfiniteScroll = () => {
   };
 
   return (
-    <main className={classes.container}>
+    <div className={classes.gifGridRoot}>
       <div className={classes.masonic}>
         <Masonry
           onRender={maybeLoadMore}
@@ -77,8 +77,8 @@ const InfiniteScroll = () => {
         />
       </div>
       <GifStatus />
-    </main>
+    </div>
   );
 };
 
-export default InfiniteScroll;
+export default GifGrid;
