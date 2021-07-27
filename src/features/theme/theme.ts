@@ -26,6 +26,13 @@ const generateTheme = (useDarkTheme: boolean) => {
       spacing: 8,
       borderRadius: 4,
     },
+    overrides: {
+      MuiTypography: {
+        h1: {
+          fontSize: '2rem',
+        },
+      },
+    },
   });
 };
 

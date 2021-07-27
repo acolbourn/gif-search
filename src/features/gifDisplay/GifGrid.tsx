@@ -38,6 +38,9 @@ const GifGrid = () => {
           offset: apiIndex,
         };
         dispatch(fetchGifs(searchParams));
+      } else {
+        // force resize 1st run to fix masonic width overflow bug
+        window.dispatchEvent(new Event('resize'));
       }
     }
   }, [query, dispatch, totalNumGifs, apiIndex]);

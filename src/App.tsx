@@ -9,6 +9,7 @@ import Navbar from './features/navbar/Navbar';
 import GifGrid from './features/gifDisplay/GifGrid';
 import Favorites from './features/favorites/Favorites';
 import useStyles from './AppStyles';
+import GifSinglePage from './features/gifDisplay/GifSinglePage';
 
 function App() {
   const classes = useStyles();
@@ -27,6 +28,9 @@ function App() {
             <Switch>
               <Route path='/favorites'>
                 <Favorites />
+              </Route>
+              <Route path='/gifs/:id'>
+                <GifSinglePage />
               </Route>
               <Route path='/'>
                 <GifGrid />

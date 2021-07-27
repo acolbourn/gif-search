@@ -1,5 +1,6 @@
 import React from 'react';
 import { useImage } from 'react-image';
+import { Link } from 'react-router-dom';
 import { Gif } from '../../types/GifApiResponse';
 import GifButtons from './GifButtons';
 import useStyles from './styles/GifDisplayStyles';
@@ -17,7 +18,9 @@ const GifDisplay: React.FC<GifDisplayProps> = ({ gif }) => {
 
   return (
     <div className={classes.gifDisplayRoot}>
-      <img src={src} alt={gif.title} className={classes.gif} />
+      <Link to={`gifs/${gif.id}`}>
+        <img src={src} alt={gif.title} className={classes.gif} />
+      </Link>
       <div className={classes.buttons}>
         <GifButtons id={gif.id} />
       </div>
