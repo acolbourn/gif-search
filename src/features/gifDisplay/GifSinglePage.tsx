@@ -1,50 +1,62 @@
 import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
-import { useAppSelector } from '../../app/hooks';
-import { selectGifById } from '../search/searchSlice';
-
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import { useTheme } from '@material-ui/core/styles';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import {
+  selectGifById,
+  fetchGifById,
+  selectSearchState,
+} from '../search/searchSlice';
+import SyncLoader from 'react-spinners/SyncLoader';
 import GifButtons from './GifButtons';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    gifDisplayRoot: {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    gifLayout: {
-      width: '50%',
-    },
-    gif: {
-      width: '100%',
-    },
-  })
-);
+import useStyles from './styles/GifSinglePageStyles';
 
 const GifSinglePage: React.FC = () => {
   const classes = useStyles();
+  const theme = useTheme();
   let { id } = useParams<{ id: string }>();
   const gif = useAppSelector((state) => selectGifById(state, id));
+  const { status, error } = useAppSelector(selectSearchState);
+  const dispatch = useAppDispatch();
 
   let content: JSX.Element;
   if (gif) {
     content = (
       <div className={classes.gifLayout}>
-        <Typography variant='h1' gutterBottom>
+        <Typography variant='h1' className={classes.title}>
           {gif.title}
         </Typography>
-        <img
-          src={gif?.images.original.url}
-          alt={gif?.title}
-          className={classes.gif}
-        />
-        <GifButtons id={id} />
+        <div className={classes.gifAndButtons}>
+          <img
+            src={gif.images.original.url}
+            alt={gif.title}
+            className={classes.gif}
+          />
+          <div className={classes.buttons}>
+            <GifButtons id={id} />
+          </div>
+        </div>
       </div>
     );
   } else {
-    content = <div>Loading...</div>;
+    // If gif not in store, fetch or display error/loading
+    content = <SyncLoader color={theme.palette.primary.light} />;
+    if (status !== 'loading' && status !== 'error') {
+      dispatch(fetchGifById(id));
+    } else if (error || status === 'error') {
+      content = (
+        <Paper>
+          <Typography
+            className={classes.message}
+            variant='body1'
+            style={error ? { color: 'red' } : {}}
+          >
+            {error}
+          </Typography>
+        </Paper>
+      );
+    }
   }
 
   return <div className={classes.gifDisplayRoot}>{content}</div>;

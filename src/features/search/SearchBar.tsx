@@ -4,6 +4,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { useAppDispatch } from '../../app/hooks';
+import { useLocation, useHistory } from 'react-router-dom';
 import { configNewQuery, fetchGifs, GifSearchParams } from './searchSlice';
 import useStyles from './styles/SearchBarStyles';
 
@@ -13,10 +14,11 @@ const SearchBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const [query, setQuery] = useState('');
+  let location = useLocation();
+  let history = useHistory();
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    window.scrollTo(0, 0);
 
     const searchParams: GifSearchParams = {
       query,
@@ -26,6 +28,9 @@ const SearchBar: React.FC = () => {
     dispatch(configNewQuery(query));
     dispatch(fetchGifs(searchParams));
     setQuery('');
+    if (location.pathname !== '/') {
+      history.push('/');
+    }
   };
 
   return (

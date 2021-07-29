@@ -4,9 +4,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appRoot: {
       width: '100%',
+      height: '100vh',
       display: 'grid',
       gridTemplateColumns: '1fr',
-      gridAutoRows: 'min-content',
+      gridTemplateRows: 'min-content 1fr',
       gridTemplateAreas: `
         'navbarArea'
         'pageArea'

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       maxHeight: '400px',
       objectFit: 'cover',
       display: 'block',
+      cursor: 'pointer',
     },
     buttons: {
       position: 'absolute',

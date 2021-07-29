@@ -35,16 +35,17 @@ export default function Navbar() {
         <AppBar>
           <Toolbar className={classes.navbar}>
             <div className={classes.navLinks}>
-              {pathname === '/' ? (
-                <Link to='/favorites'>
-                  <IconButton aria-label='favorites'>
-                    <FavoriteIcon />
-                  </IconButton>
-                </Link>
-              ) : (
+              {pathname !== '/' && (
                 <Link to='/'>
                   <IconButton aria-label='home'>
                     <HomeIcon />
+                  </IconButton>
+                </Link>
+              )}
+              {pathname !== '/favorites' && (
+                <Link to='/favorites'>
+                  <IconButton aria-label='favorites'>
+                    <FavoriteIcon />
                   </IconButton>
                 </Link>
               )}

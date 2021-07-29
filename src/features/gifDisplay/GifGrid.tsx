@@ -12,7 +12,8 @@ const GifGrid = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const gifs = useAppSelector(selectAllGifs);
-  const { query, totalNumGifs } = useAppSelector(selectSearchState);
+  const { query, totalNumGifs, scrollPosition } =
+    useAppSelector(selectSearchState);
   const [apiIndex, setApiIndex] = useState(0);
 
   // Reset api index when new query is entered
@@ -65,6 +66,11 @@ const GifGrid = () => {
     }
     return false;
   };
+
+  // Scroll to prev location so user doesn't have to start from top if they click on individual gifs
+  useEffect(() => {
+    window.scrollTo(0, scrollPosition);
+  }, [scrollPosition]);
 
   return (
     <div className={classes.gifGridRoot}>

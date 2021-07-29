@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Gif } from '../../types/GifApiResponse';
 import GifDisplay from './GifDisplay';
 import ImagePlaceholder from './ImagePlaceholder';
-import { ErrorBoundary } from '../error/ErrorBoundary';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export interface GifLoaderProps {
   data: Gif;

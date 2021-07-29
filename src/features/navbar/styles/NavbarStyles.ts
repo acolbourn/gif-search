@@ -9,6 +9,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     navLinks: {
+      display: 'flex',
+      flexDirection: 'row',
       marginLeft: '8px',
       [theme.breakpoints.down('xs')]: {
         marginLeft: 0,

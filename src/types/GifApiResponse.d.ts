@@ -135,3 +135,8 @@ export interface Pagination {
   count: number;
   offset: number;
 }
+
+export interface GifFetchByIdApiResponse {
+  data: Gif;
+  meta: Meta;
+}

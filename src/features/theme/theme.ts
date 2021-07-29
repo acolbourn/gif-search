@@ -29,7 +29,7 @@ const generateTheme = (useDarkTheme: boolean) => {
     overrides: {
       MuiTypography: {
         h1: {
-          fontSize: '2rem',
+          fontSize: '1.2rem',
         },
       },
     },
