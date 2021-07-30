@@ -116,8 +116,11 @@ export const searchSlice = createSlice({
 
 export const { configNewQuery, saveScrollPosition } = searchSlice.actions;
 
-export const { selectAll: selectAllGifs, selectById: selectGifById } =
-  gifsAdapter.getSelectors<RootState>((state) => state.search);
+export const {
+  selectAll: selectAllGifs,
+  selectById: selectGifById,
+  selectEntities: selectGifEntities,
+} = gifsAdapter.getSelectors<RootState>((state) => state.search);
 
 export const selectSearchState = (state: RootState) => state.search;
 
